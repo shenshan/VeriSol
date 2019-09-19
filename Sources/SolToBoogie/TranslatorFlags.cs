@@ -15,6 +15,7 @@ namespace SolToBoogie
             NoDataValuesInfoFlag = false;
             NoAxiomsFlag = false;
             NoUnsignedAssumesFlag = false;
+            UseBitVectorsFlag = false;
             NoHarness = false; 
             GenerateInlineAttributes = true;
             ModelReverts = false;
@@ -35,6 +36,10 @@ namespace SolToBoogie
         /// Do not emit x >= 0 for unsigned expressions x
         /// </summary>
         public bool NoUnsignedAssumesFlag { get; set; }
+        /// <summary>
+        /// Use bitvector implementation for unsigned integers x
+        /// </summary>
+        public bool UseBitVectorsFlag { get; set; }
         /// <summary>
         /// Omit generating Corral and Boogie harness
         /// </summary>

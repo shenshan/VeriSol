@@ -1602,6 +1602,7 @@ namespace SolToBoogie
             }
             else
             {
+                // TODO(bv): branch: "uint": use bvXX literals; for int, leave as below
                 BigInteger num = BigInteger.Parse(node.Value);
                 return new BoogieLiteralExpr(num);
             }
@@ -2504,6 +2505,7 @@ namespace SolToBoogie
                 case "++":
                 case "--":
                     var oper = (node.Operator == "++" ? BoogieBinaryOperation.Opcode.ADD : BoogieBinaryOperation.Opcode.SUB);
+                    // TODO(bv): branch on uintXX: use bv for "1"; for int, leave as below
                     BoogieExpr rhs = new BoogieBinaryOperation(oper, expr, new BoogieLiteralExpr(1));
                     if (node.Prefix) // ++x, --x
                     {

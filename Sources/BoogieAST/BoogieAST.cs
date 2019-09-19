@@ -355,6 +355,36 @@ namespace BoogieAST
         }
     }
 
+    public class BoogieBVType : BoogieType
+    {
+        public int BVSize { get; set; }
+
+        public BoogieBVType(int bvSize)
+        {
+            this.BVSize = bvSize;
+        }
+        public override string ToString()
+        {
+            return "bv" + BVSize.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return BVSize.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is BoogieBVType bvType)
+            {
+                // TODO(bv): compare bitvectors of diff sizes?
+                // Unless Solidity requires explicit cast when comparing
+                // Check the Solidity AST: most probably, casting is there
+                return BVSize.Equals(bvType.BVSize);
+            }
+            return false;
+        }
+    }
     public class BoogieCtorType : BoogieType
     {
         public string Name { get; set; }
@@ -973,6 +1003,7 @@ namespace BoogieAST
 
     public class BoogieExpr : BoogieASTNode
     {
+        // TODO(bv): add BoogieType here
     }
 
     public class BoogieLiteralExpr : BoogieExpr
@@ -1133,6 +1164,7 @@ namespace BoogieAST
         }
     }
 
+    // TODO(bv): expand with bitvector operations?
     public class BoogieBinaryOperation : BoogieExpr
     {
         public enum Opcode
@@ -1177,6 +1209,7 @@ namespace BoogieAST
             return builder.ToString();
         }
 
+        // TODO(bv): add operand type
         public static string OpcodeToString(Opcode op)
         {
             switch (op)

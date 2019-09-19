@@ -151,6 +151,10 @@ namespace VeriSolRunner
             {
                 translatorFlags.NoUnsignedAssumesFlag = true;
             }
+            if (args.Any(x => x.Equals("/useBitvectors")))
+            {
+                translatorFlags.UseBitVectorsFlag = true;
+            }
             if (args.Any(x => x.Equals("/omitAxioms")))
             {
                 translatorFlags.NoAxiomsFlag = true;

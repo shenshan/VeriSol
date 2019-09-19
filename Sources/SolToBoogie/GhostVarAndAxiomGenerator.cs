@@ -39,6 +39,8 @@ namespace SolToBoogie
             context.Program.AddDeclaration(GenerateAbiEncodedFunctionTwoArgs());
             context.Program.AddDeclaration(GenerateAbiEncodedFunctionOneArgRef());
             context.Program.AddDeclaration(GenerateAbiEncodedFunctionTwoArgsOneRef());
+            // TODO(bv): add functions for bitvector arithmetic
+            //GenerateAllBVFunctions();
         }
 
         private BoogieFunction GenerateKeccakFunction()
@@ -123,7 +125,29 @@ namespace SolToBoogie
                 new List<BoogieVariable>() { outVar },
                 null);
         }
-
+        private void GenerateAllBVFunctions()
+        {
+            // TODO(bv): arithmetic binary operations; what other operations are needed?
+            for (int sz = 8; sz < 264; sz = sz + 8)
+            {
+                context.Program.AddDeclaration(GenerateBinBVFunction("add", sz));
+                context.Program.AddDeclaration(GenerateBinBVFunction("sub", sz));
+                context.Program.AddDeclaration(GenerateBinBVFunction("mul", sz));
+            }
+        }
+        private BoogieFunction GenerateBinBVFunction(string op, int sz)
+        {
+            string functionName = "bv" + sz + op;
+            var inVar1 = new BoogieFormalParam(new BoogieTypedIdent("x", new BoogieBVType(sz)));
+            var inVar2 = new BoogieFormalParam(new BoogieTypedIdent("y", new BoogieBVType(sz)));
+            // TODO(bv): what if the result has larger/smaller size than operands? Casts.
+            var outVar = new BoogieFormalParam(new BoogieTypedIdent("ret", new BoogieBVType(sz)));
+            return new BoogieFunction(
+                functionName,
+                new List<BoogieVariable>() { inVar1, inVar2 },
+                new List<BoogieVariable>() { outVar },
+                new List<BoogieAttribute> { new BoogieAttribute("bvbuiltin", "\"" + "bv" + op + "\"") });
+        }
 
         private void GenerateTypes()
         {
